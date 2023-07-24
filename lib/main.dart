@@ -29,8 +29,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: MainFoodPage(),
-      // home: MainFoodPage(),
-      // home: PopularFoodPage(),
+      
     );
   }
 }

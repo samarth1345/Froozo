@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:froozo/controllers/recommended_product_controller.dart';
+import 'package:froozo/utils/app_constants.dart';
 import 'package:froozo/utils/colors.dart';
 import 'package:froozo/utils/dimensions.dart';
 import 'package:froozo/widgets/app_icon.dart';
@@ -8,15 +10,17 @@ import 'package:froozo/widgets/small_text.dart';
 import 'package:get/get.dart';
 
 class RecommendedFoodDetail extends StatelessWidget {
-  const RecommendedFoodDetail({super.key});
-  final String textToDisplay =
-      "You will be offered 8 problems, dedicated to the adventures of a restless mathematician, a programmer and just a funny character named Rudolf, and 2 hours 15 minutes to solve them. Problems have expected difficulties to compose an interesting competition for participants with ratings up to 1600. However, all of you who wish to take part and have a rating of 1600 or higher, can register for the round unofficially";
+  int pageId;
+  RecommendedFoodDetail({super.key, required this.pageId});
   @override
   Widget build(BuildContext context) {
+    var product =
+        Get.find<RecommendedProductController>().recommendedProductList[pageId];
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             toolbarHeight: Dimensions.heigt70,
             title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,7 +40,7 @@ class RecommendedFoodDetail extends StatelessWidget {
               child: Container(
                 child: Center(
                   child: BigText(
-                    text: "This is Froozo",
+                    text: product.name,
                     size: Dimensions.font26,
                   ),
                 ),
@@ -55,8 +59,8 @@ class RecommendedFoodDetail extends StatelessWidget {
             backgroundColor: AppColors.yellowColor,
             expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
-                background: Image.asset(
-              "assets/Images/Temp.jpg",
+                background: Image.network(
+              AppConstants.BASE_URL + "/uploads/" + product.img,
               width: double.maxFinite,
               fit: BoxFit.cover,
             )),
@@ -70,7 +74,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                         right: Dimensions.width20,
                         bottom: Dimensions.heigt20),
                     child: ExpandableTextWidget(
-                        textHeightfact: 3, text: textToDisplay + textToDisplay))
+                        textHeightfact: 3, text: product.description))
               ],
             ),
           )
@@ -96,7 +100,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                   iconSize: Dimensions.icon24,
                 ),
                 BigText(
-                  text: "\$12.88 " + "X" + " 0",
+                  text: "\$ ${product.price} " + "X" + " 0",
                   color: AppColors.mainBlackColor,
                   size: Dimensions.font26,
                 ),
@@ -147,7 +151,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                         left: Dimensions.width20,
                         right: Dimensions.width20),
                     child: BigText(
-                      text: "\$100 | Add to cart",
+                      text: "\$ ${product.price} | Add to cart",
                       color: Colors.white,
                     ),
                     decoration: BoxDecoration(

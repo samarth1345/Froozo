@@ -106,11 +106,11 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return InkWell(
-                      //on tap move to Recommended Food page
+                    return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => RecommendedFoodDetail()));
+                        Get.to(() => RecommendedFoodDetail(
+                              pageId: index,
+                            ));
                       },
                       child: Container(
                         margin: EdgeInsets.only(
@@ -127,7 +127,11 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                     BorderRadius.circular(Dimensions.radius20),
                                 color: Colors.white30,
                                 image: DecorationImage(
-                                    image: NetworkImage(AppConstants.BASE_URL+"/uploads/"+recommendedProducts.recommendedProductList[index].img!),
+                                    image: NetworkImage(AppConstants.BASE_URL +
+                                        "/uploads/" +
+                                        recommendedProducts
+                                            .recommendedProductList[index]
+                                            .img!),
                                     fit: BoxFit.cover),
                               ),
                             ),
@@ -151,14 +155,16 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       BigText(
-                                          text:
-                                              recommendedProducts
-                                              .recommendedProductList[index].name!),
+                                          text: recommendedProducts
+                                              .recommendedProductList[index]
+                                              .name!),
                                       SizedBox(
                                         height: Dimensions.heigt10,
                                       ),
-                                      SmallText(text: recommendedProducts
-                                              .recommendedProductList[index].description),
+                                      SmallText(
+                                          text: recommendedProducts
+                                              .recommendedProductList[index]
+                                              .description),
                                       SizedBox(
                                         height: Dimensions.heigt10,
                                       ),
@@ -243,11 +249,12 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                       "/uploads/" +
                       popularProductItem.img!))),
         ),
-        InkWell(
+        GestureDetector(
           //moving to new page on tap
           onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => PopularFoodPage()));
+            Get.to(PopularFoodPage(
+              pageId: index,
+            ));
           },
           child: Align(
             alignment: Alignment.bottomCenter,

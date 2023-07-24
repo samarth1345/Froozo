@@ -24,7 +24,7 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
   @override
   void initState() {
     super.initState();
-    if (widget.text.length > textHeight * widget.textHeightfact) {
+    if (widget.text.length > (textHeight * widget.textHeightfact)) {
       firstHalf = widget.text
           .substring(0, (textHeight.toInt()) * (widget.textHeightfact.toInt()));
       secondHalf = widget.text.substring(
@@ -51,10 +51,11 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
                 SmallText(
                   text: hiddenText
                       ? (firstHalf + "...")
-                      : firstHalf + secondHalf + firstHalf,
+                      : (firstHalf + secondHalf + firstHalf),
                   size: textSize,
                   color: AppColors.paraColor,
                   height: 1.8,
+                  maxlines: 30,
                 ),
                 InkWell(
                   onTap: () {
