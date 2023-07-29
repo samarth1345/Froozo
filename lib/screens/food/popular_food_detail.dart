@@ -1,5 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:froozo/controllers/cart_controller.dart';
 import 'package:froozo/controllers/popular_product_controller.dart';
+import 'package:froozo/screens/cart/cart_page.dart';
+import 'package:froozo/screens/home/home_page.dart';
+import 'package:froozo/screens/home/main_food_page.dart';
 import 'package:froozo/utils/app_constants.dart';
 import 'package:froozo/utils/colors.dart';
 import 'package:froozo/utils/dimensions.dart';
@@ -11,14 +17,31 @@ import 'package:froozo/widgets/icon_and_text_widget.dart';
 import 'package:froozo/widgets/small_text.dart';
 import 'package:get/get.dart';
 
-class PopularFoodPage extends StatelessWidget {
+class PopularFoodPage extends StatefulWidget {
   int pageId;
   PopularFoodPage({super.key, required this.pageId});
+
+  @override
+  State<PopularFoodPage> createState() => _PopularFoodPageState();
+}
+class _PopularFoodPageState extends State<PopularFoodPage> {
   @override
   Widget build(BuildContext context) {
     var product =
-        Get.find<PopularProductController>().popularProductList[pageId];
-    Get.find<PopularProductController>().initProduct();
+        Get.find<PopularProductController>().popularProductList[widget.pageId];
+    Get.find<PopularProductController>()
+        .initProduct(product, Get.find<CartController>());
+    void refresh(){
+      product = Get.find<PopularProductController>()
+          .popularProductList[widget.pageId];
+      Get
+          .find<PopularProductController>()
+          .initProduct(product, Get.find<CartController>());
+    }
+    FutureOr onGoBack(dynamic value) {
+      refresh();
+      setState(() {});
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -47,10 +70,51 @@ class PopularFoodPage extends StatelessWidget {
                 children: [
                   InkWell(
                       onTap: () {
-                        Navigator.of(context).pop();
+                        Get.to(HomePage());
                       },
-                      child: AppIcon(icon: Icons.arrow_back)),
-                  AppIcon(icon: Icons.shopping_cart_checkout_outlined),
+                      child: AppIcon(
+                        icon: Icons.arrow_back,
+                        iconSize: Dimensions.icon24,
+                      )),
+                  GetBuilder<PopularProductController>(builder: (controller) {
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => CartPage())!.then(onGoBack);
+                      },
+                      child: Stack(
+                        children: [
+                          AppIcon(
+                            icon: Icons.shopping_cart_outlined,
+                            iconSize: Dimensions.icon24,
+                          ),
+                          Get.find<PopularProductController>().getTotalItems > 0
+                              ? Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: AppIcon(
+                                    icon: Icons.circle,
+                                    size: Dimensions.icon24,
+                                    iconColor: Colors.transparent,
+                                    backgroundColor: AppColors.mainColor,
+                                  ),
+                                )
+                              : Container(),
+                          Get.find<PopularProductController>().getTotalItems > 0
+                              ? Positioned(
+                                  right: 5,
+                                  top: 5,
+                                  child: SmallText(
+                                    text: Get.find<PopularProductController>()
+                                        .getTotalItems
+                                        .toString(),
+                                    color: Colors.white,
+                                    size: Dimensions.font12,
+                                  ))
+                              : Container()
+                        ],
+                      ),
+                    );
+                  }),
                 ],
               )),
           //Details
@@ -132,7 +196,7 @@ class PopularFoodPage extends StatelessWidget {
                   width: Dimensions.width10,
                 ),
                 BigText(
-                  text: popularProduct.quantity.toString(),
+                  text: popularProduct.inCartItems.toString(),
                 ),
                 SizedBox(
                   width: Dimensions.width10,
@@ -148,19 +212,24 @@ class PopularFoodPage extends StatelessWidget {
                 )
               ]),
             ),
-            Container(
-              padding: EdgeInsets.only(
-                  top: Dimensions.heigt20,
-                  bottom: Dimensions.heigt20,
-                  left: Dimensions.width20,
-                  right: Dimensions.width20),
-              child: BigText(
-                text: "\$ ${product.price} | Add to cart",
-                color: Colors.white,
+            GestureDetector(
+              onTap: () {
+                popularProduct.addItem(product);
+              },
+              child: Container(
+                padding: EdgeInsets.only(
+                    top: Dimensions.heigt20,
+                    bottom: Dimensions.heigt20,
+                    left: Dimensions.width20,
+                    right: Dimensions.width20),
+                child: BigText(
+                  text: "\$ ${product.price} | Add to cart",
+                  color: Colors.white,
+                ),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radius20),
+                    color: AppColors.mainColor),
               ),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(Dimensions.radius20),
-                  color: AppColors.mainColor),
             )
           ]),
         );

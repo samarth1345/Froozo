@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:froozo/controllers/cart_controller.dart';
+import 'package:froozo/controllers/popular_product_controller.dart';
+import 'package:froozo/controllers/recommended_product_controller.dart';
 import 'package:froozo/screens/home/food_page_body.dart';
 import 'package:froozo/utils/dimensions.dart';
 import 'package:froozo/widgets/big_text.dart';
 import 'package:froozo/widgets/small_text.dart';
+import 'package:get/get.dart';
 import '../../utils/colors.dart';
 
 class MainFoodPage extends StatefulWidget {
@@ -13,10 +17,17 @@ class MainFoodPage extends StatefulWidget {
 }
 
 class _MainFoodPageState extends State<MainFoodPage> {
+  Future<void> _loadResource() async {
+    await Get.find<PopularProductController>().getPopularProductList();
+    await Get.find<RecommendedProductController>().getRecommendedProductList();
+    Get.find<CartController>().getCartData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return RefreshIndicator(
+      onRefresh: _loadResource,
+      child: Column(
         children: [
           Container(
               margin: EdgeInsets.only(
