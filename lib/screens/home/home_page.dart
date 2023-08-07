@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:froozo/screens/account/account_page.dart';
+import 'package:froozo/screens/address/add_address_page.dart';
 import 'package:froozo/screens/auth/sign_up_page.dart';
 import 'package:froozo/screens/cart/cart_history.dart';
 import 'package:froozo/screens/home/main_food_page.dart';
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> _buildScreens() {
-    return [MainFoodPage(), SignUpPage(), CartHistory(), AccountPage()];
+    return [MainFoodPage(), Container(), CartHistory(), AccountPage()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:froozo/controllers/cart_controller.dart';
+import 'package:froozo/controllers/location_controller.dart';
 import 'package:froozo/controllers/popular_product_controller.dart';
 import 'package:froozo/controllers/recommended_product_controller.dart';
+import 'package:froozo/screens/address/add_address_page.dart';
 import 'package:froozo/screens/auth/sign_up_page.dart';
 import 'package:froozo/screens/cart/cart_page.dart';
 import 'package:froozo/screens/food/popular_food_detail.dart';
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
     Get.find<PopularProductController>().getPopularProductList();
     Get.find<RecommendedProductController>().getRecommendedProductList();
     Get.find<CartController>().getCartData();
+    Get.find<LocationController>().setPermissions();
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Froozo',
@@ -33,8 +36,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      // home: SplashScreen(),
-      home: SignUpPage(),
+      home: SplashScreen(),
+      // home: AddAddressPage(),
     );
   }
 }

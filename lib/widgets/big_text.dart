@@ -3,7 +3,7 @@ import 'package:froozo/utils/dimensions.dart';
 
 class BigText extends StatelessWidget {
   Color? color;
-  final String text;
+  String text;
   double size;
   TextOverflow overflow;
   BigText(
@@ -15,6 +15,9 @@ class BigText extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    if (text.length > 27) {
+      text = text.substring(0, 27) + "..";
+    }
     return Text(
       maxLines: 1,
       text,

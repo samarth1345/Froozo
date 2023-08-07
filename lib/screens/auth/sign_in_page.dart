@@ -8,6 +8,7 @@ import 'package:froozo/widgets/app_text_field.dart';
 import 'package:froozo/widgets/big_text.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -24,6 +25,7 @@ class SignInPage extends StatelessWidget {
     void authorize() {
       if (emailController.text.isEmpty) {
         Get.snackbar("Error", "Please enter your email");
+        return;
       }
       if (passwordController.text.isEmpty) {
         Get.snackbar("Error", "Please enter your password");

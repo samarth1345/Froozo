@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:froozo/screens/address/add_address_page.dart';
 import 'package:froozo/screens/home/home_page.dart';
 import 'package:froozo/screens/home/main_food_page.dart';
 import 'package:froozo/utils/app_constants.dart';
@@ -220,6 +221,7 @@ class CartPage extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Controller.addToHistory();
+                      Get.to(AddAddressPage());
                     },
                     child: Container(
                       padding: EdgeInsets.only(
